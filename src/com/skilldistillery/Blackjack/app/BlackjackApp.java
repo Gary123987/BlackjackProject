@@ -2,28 +2,40 @@ package com.skilldistillery.Blackjack.app;
 
 import java.util.Scanner;
 
-import com.skilldistillery.Blackjack.entities.Card;
-import com.skilldistillery.Blackjack.entities.Deck;
+import com.skilldistillery.Blackjack.entities.Dealer;
 
 public class BlackjackApp {
 
 	public static void main(String[] args) {
-
 		Scanner sc = new Scanner(System.in);
-		Deck deck = new Deck();
-		Card card = new Card();
-		int value = 0;
+		boolean keepGoing = true;
+		boolean gameEnded = false;
 
-		System.out.println("how many card u want?");
-		deck.shuffleDeck();
-		int numOfCards = sc.nextInt();
+		while (keepGoing) {
+			Dealer dealer = new Dealer();
+			gameEnded = false;
+			System.out.println("Would you like to play a hand of black jack? Y/N");
+			String choice = sc.next();
 
-		for (int i = 0; i < numOfCards; i++) {
-			card = deck.dealCard();
-			value = value + card.getValue(card);
-			System.out.println("you got a " + card);
-			System.out.println("your value is " + value);
+			if (choice.equalsIgnoreCase("y")) {
+				gameEnded = dealer.startGame();
+				if (!gameEnded) {
+					gameEnded = dealer.playerChoice();
+				}
+				if (!gameEnded) {
+					gameEnded = dealer.dealerDraw();
+				}
+				if (!gameEnded) {
+					dealer.winnerCheck();
+				}
+
+			}
+			if (choice.equalsIgnoreCase("n")) {
+				System.out.println("Thanks for playing");
+				keepGoing = false;
+			}
+
 		}
-	}
 
+	}
 }
